@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-
+from django.contrib.auth.hashers import make_password
 class CustomUserManager(BaseUserManager):
     def create_user(self, name, image, password=None):
         if not name:
@@ -39,3 +39,18 @@ class CustomUser(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_admin
+class System_users(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='user_images/')
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=128)
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+
+
+# class User(models.Model):
+    
